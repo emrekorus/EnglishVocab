@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#34495E"
+    android:orientation="vertical"
+    tools:context=".ui.my_list.AddNewWordActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Please fill the below fields correctly to add a word!"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/etWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:hint="Word"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <EditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:hint="Description"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:onClick="camera"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layoutImageChoose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:text="Choose Word Photo"
+                            android:textStyle="bold"
+
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="end"
+                            android:contentDescription="vocab image"
+                            android:onClick="camera"
+                            android:src="@drawable/ic_home_black_24dp" />
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:id="@+id/img_vocab"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:contentDescription="vocab image"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_home_black_24dp"
+
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <EditText
+                android:id="@+id/etSentence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:hint="Sentence"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/etSynonyms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:hint="Synonyms"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/etAntonyms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_background"
+                android:backgroundTint="@color/white"
+                android:hint="Antonyms"
+                android:inputType="text"
+                android:padding="10dp" />
+
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:onClick="addNewWord"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:text="Add New Word" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

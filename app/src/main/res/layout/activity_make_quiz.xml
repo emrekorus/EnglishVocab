@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNumberOfQuestions"
+            android:text="Please select one of the options below."
+            android:textAlignment="textStart"
+            android:justificationMode="inter_word"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/horizontalLine"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvNumberOfQuestions"
+            android:background="#798B9E" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvQuestionNumber"
+            android:text="QUESTION 2 OF 5"
+            android:layout_below="@+id/horizontalLine"
+            android:textAlignment="textStart"
+            android:justificationMode="inter_word"
+            android:textColor="#34495E"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvQuestion"
+            android:layout_below="@+id/tvQuestionNumber"
+            android:text="Which word means &quot;A system for talking to somebody else over long distances, using wires or radio; a machine used for this&quot;?"
+            android:textSize="18sp"
+            android:justificationMode="inter_word"
+            android:layout_marginTop="10dp"
+            android:textStyle="normal" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvQuestion"
+            android:layout_marginTop="6dp"
+            android:layout_weight="0.04" >
+            <RadioButton
+                android:id="@+id/radio0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:textColor="#ffffff"
+        android:layout_gravity="end"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="btnNextClicked"
+        android:id="@+id/btnNext"
+        />
+
+</LinearLayout>

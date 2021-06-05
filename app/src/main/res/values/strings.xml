@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">EnglishVocab</string>
+    <string name="title_home">Home</string>
+    <string name="title_quiz">Quiz</string>
+    <string name="title_my_list">My List</string>
+    <string name="search">Search</string>
+    <string name="invalid_word">Please Enter Valid Word</string>
+    <string name="invalid_description">Please Enter Valid Description</string>
+    <string name="invalid_sentence">Please Enter Valid Sentence</string>
+    <string name="invalid_synonyms">Please Enter Valid Synonyms</string>
+    <string name="invalid_antonyms">Please Enter Valid Antonyms</string>
+</resources>
