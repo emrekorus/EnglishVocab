@@ -1,6 +1,7 @@
 package com.ybu.englishvocab
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.ybu.englishvocab.service.MyReceiver
 import com.ybu.englishvocab.service.NotificationService
 import com.ybu.englishvocab.service.ServiceNotification
 
@@ -18,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //register receiver for getting notification
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("NOTIFICATION") //Should be the same action in service
+        registerReceiver(MyReceiver(), intentFilter)
         /*val intent = Intent(this,NotificationService::class.java)
         startService(intent)*/
         startService(Intent(this, ServiceNotification::class.java))

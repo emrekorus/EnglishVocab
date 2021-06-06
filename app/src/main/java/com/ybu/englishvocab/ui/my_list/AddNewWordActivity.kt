@@ -37,7 +37,7 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     lateinit var etSynonyms: EditText
     lateinit var etAntonyms: EditText
     lateinit var btnAdd: Button
-    lateinit var image: ByteArray
+    var image: ByteArray? = null
     lateinit var awesomeValidation: AwesomeValidation
 
 
@@ -56,7 +56,7 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         initialize()
         Log.d(TAG, "onCreate: Started.")
 
-        val types = arrayOf("Noun", "Verb", "Adverb", "Adjective", "Phrase or Idiom")
+        val types = arrayOf("Verb", "Adverb", "Adjective", "Phrase and Idiom")
         val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, types);
         spinnerType.adapter = adapter
         spinnerType.onItemSelectedListener = this;
@@ -148,8 +148,13 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     fun addNewWord(view: View) {
         //Check Validation
         if (awesomeValidation.validate()) {
+            if(image == null){
+                Toast.makeText(applicationContext, "Select an image of word", Toast.LENGTH_SHORT)
+                    .show()
+                return
+            }
             //On Success
-            Toast.makeText(applicationContext, "Form Validate Successfully...", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, "Word is added", Toast.LENGTH_SHORT)
                 .show()
 
             //Database Insert Operation
@@ -173,6 +178,7 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 "Tag Count: " + vocab_id + " " + db.getAllVocabs().size + " " + db.getAllVocabs()
                     .toString() + "\n"
             );
+            super.onBackPressed()
 
         } else {
             //On Fail
@@ -182,20 +188,40 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     }
 
     fun camera(view: View) {
-        val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA_CODE)
+
+
+
+        val gallery = Intent(Intent.ACTION_PICK)
+        gallery.type = "image/*"
+        startActivityForResult(gallery, CAMERA_CODE)
+
+        //Pick image with CAMERA
         /*
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_CODE)
-        */
-         */
+        val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA_CODE)*/
+
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Toast.makeText(applicationContext, "$resultCode", Toast.LENGTH_SHORT)
+            .show()
+
+        Log.d(TAG, "onActivityResult: $resultCode.")
+
+        if (resultCode == RESULT_OK && requestCode == CAMERA_CODE) {
+            Log.d(TAG, "onActivityResult: $resultCode.")
+
+           image = this.contentResolver.openInputStream(data?.data!!)?.buffered()?.use { it.readBytes() }!!
+            findViewById<ImageView>(R.id.img_vocab).setImageURI(data.data)
+            findViewById<LinearLayout>(R.id.layoutImageChoose).visibility = View.GONE
+            findViewById<ImageView>(R.id.img_vocab).visibility = View.VISIBLE
+        }
+
+
+
+
 /*
         if (requestCode === CAMERA_CODE) {
             if (resultCode === Activity.RESULT_OK) {
@@ -222,6 +248,8 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }*/
 
 
+        /*
+
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
             val bitmap: Bitmap? = data!!.extras!!.get("data") as Bitmap
 
@@ -232,7 +260,7 @@ class AddNewWordActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             findViewById<ImageView>(R.id.img_vocab).setImageBitmap(bitmap)
             findViewById<LinearLayout>(R.id.layoutImageChoose).visibility = View.GONE
             findViewById<ImageView>(R.id.img_vocab).visibility = View.VISIBLE
-        }
+        }*/
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

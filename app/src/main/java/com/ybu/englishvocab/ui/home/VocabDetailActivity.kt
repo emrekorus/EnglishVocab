@@ -1,12 +1,15 @@
 package com.ybu.englishvocab.ui.home
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
@@ -16,6 +19,8 @@ import com.ybu.englishvocab.service.DatabaseHelper
 
 
 class VocabDetailActivity : AppCompatActivity() {
+
+    val CAMERA_CODE: Int = 7777
 
     private val TAG = "VocabDetailActivity"
     lateinit var tvName: TextView
@@ -27,6 +32,7 @@ class VocabDetailActivity : AppCompatActivity() {
     lateinit var img_vocab: ImageView
     lateinit var img_save: ImageView
     var vocab: Vocab? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +62,15 @@ class VocabDetailActivity : AppCompatActivity() {
             img_vocab.setImageBitmap(bmp)
             /*  Picasso.get().load(vocab.image)
                   .error(R.drawable.ic_home_black_24dp).into(img_vocab);*/
+            var db: DatabaseHelper = DatabaseHelper(this);
+            val isSaved = db.isVocabSaved(vocab!!.id!!)
+            if(isSaved){
+                img_save.setImageResource(R.drawable.ic_save)
+                img_save.contentDescription = "saved"
+            }
+
+
+
         }
     }
 
@@ -84,6 +99,10 @@ class VocabDetailActivity : AppCompatActivity() {
         if(img_save.contentDescription == "saved"){
             img_save.setImageResource(R.drawable.ic_save_empty)
             img_save.contentDescription = "save"
+
+            //Database delete Operation
+            val db: DatabaseHelper = DatabaseHelper(this)
+            db.deleteWordFromMyList(vocab!!.id!!.toInt())
         }
         else if(img_save.contentDescription == "save"){
             img_save.setImageResource(R.drawable.ic_save)
@@ -94,6 +113,36 @@ class VocabDetailActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun changeImage(view: View) {
+        val gallery = Intent(Intent.ACTION_PICK)
+        gallery.type = "image/*"
+        startActivityForResult(gallery, CAMERA_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Toast.makeText(applicationContext, "$resultCode", Toast.LENGTH_SHORT)
+            .show()
+
+        Log.d(TAG, "onActivityResult: $resultCode.")
+
+        if (resultCode == RESULT_OK && requestCode == CAMERA_CODE) {
+            Log.d(TAG, "onActivityResult: $resultCode.")
+
+
+
+            vocab!!.image = this.contentResolver.openInputStream(data?.data!!)?.buffered()?.use { it.readBytes() }!!
+
+            findViewById<ImageView>(R.id.img_vocab).setImageURI(data.data)
+
+
+            val db = DatabaseHelper(this);
+            db.updateVocab(vocab!!)
+
+
+        }
     }
 
 

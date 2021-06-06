@@ -23,6 +23,9 @@ class MyListFragment : Fragment() {
     private val TAG = "MyListFragment"
 
     lateinit var db: DatabaseHelper
+    lateinit var list:ListView
+    lateinit var myVocabList:ArrayList<Vocab>
+    lateinit var adapter:VocabAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +34,7 @@ class MyListFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_my_list, container, false)
-        val list: ListView = root.findViewById(R.id.theList)
+        list  = root.findViewById(R.id.theList)
         val theFilter: EditText = root.findViewById(R.id.searchFilter)
         val btnAddNewWord: Button = root.findViewById(R.id.btnAddNewWord)
         Log.d(TAG, "onCreate: Started.");
@@ -40,13 +43,13 @@ class MyListFragment : Fragment() {
         db = DatabaseHelper(requireContext());
         val myVocabList_ids = db.getMyList();
         Log.d(TAG, "myVocabList: " + myVocabList_ids.toString());
-        val myVocabList = ArrayList<Vocab>();
+        myVocabList = ArrayList<Vocab>();
         for (id in myVocabList_ids) {
             myVocabList.add(db.getVocab(id.toLong()))
         }
 
 
-        val adapter = VocabAdapter(requireContext(), myVocabList)
+        adapter = VocabAdapter(requireContext(), myVocabList)
         list.adapter = adapter
 
         list.setOnItemClickListener { parent, view, position, id ->
@@ -81,5 +84,23 @@ class MyListFragment : Fragment() {
             startActivity(intent)
         }
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: " + "da");
+        //Loading myVocabList from database.
+        db = DatabaseHelper(requireContext());
+        val myVocabList_ids = db.getMyList();
+        Log.d(TAG, "myVocabList: " + myVocabList_ids.toString());
+        myVocabList = ArrayList<Vocab>();
+        for (id in myVocabList_ids) {
+            myVocabList.add(db.getVocab(id.toLong()))
+        }
+
+
+        adapter = VocabAdapter(requireContext(), myVocabList)
+        list.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 }

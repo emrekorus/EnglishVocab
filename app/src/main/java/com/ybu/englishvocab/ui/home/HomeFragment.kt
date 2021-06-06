@@ -22,6 +22,9 @@ class HomeFragment : Fragment() {
     private val TAG = "HomeFragment"
 
     lateinit var db: DatabaseHelper
+    lateinit var list: ListView
+    lateinit var vocabList: ArrayList<Vocab>
+    lateinit var adapter: VocabAdapter
 
 
     override fun onCreateView(
@@ -30,17 +33,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val list: ListView = root.findViewById(R.id.theList)
+        list = root.findViewById(R.id.theList)
         val theFilter: EditText = root.findViewById(R.id.searchFilter)
         Log.d(TAG, "onCreate: Started.");
 
         //Loading all vocabs from database.
         db = DatabaseHelper(requireContext());
-        val vocabList = db.getAllVocabs();
+        vocabList = db.getAllVocabs();
 
         Log.d(TAG, "Tag Count: " + db.getAllVocabs().size);
 
-        val adapter = VocabAdapter(requireContext(), vocabList)
+        adapter = VocabAdapter(requireContext(), vocabList)
         list.adapter = adapter
 
         list.setOnItemClickListener { parent, view, position, id ->
@@ -72,5 +75,17 @@ class HomeFragment : Fragment() {
         })
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: " + "da");
+        //Loading myVocabList from database.
+        db = DatabaseHelper(requireContext());
+        vocabList = db.getAllVocabs();
+
+        adapter = VocabAdapter(requireContext(), vocabList)
+        list.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 }

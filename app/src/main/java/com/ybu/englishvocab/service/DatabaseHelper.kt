@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DatabaseHelper(val context: Context) : SQLiteOpenHelper(
+class DatabaseHelper(val context: Context?) : SQLiteOpenHelper(
     context, DATABASE_NAME, null,
     DATABASE_VERSION
 ) {
@@ -85,7 +85,7 @@ class DatabaseHelper(val context: Context) : SQLiteOpenHelper(
         db.execSQL(CREATE_TABLE_MY_VOCAB_LIST)
         db.execSQL(CREATE_TABLE_QUESTIONS)
 
-        val vocabList = Functions.loadInitialVocabs(context)
+        val vocabList = Functions.loadInitialVocabs(context!!)
         for (vocab in vocabList) {
             val values = ContentValues()
             values.put(KEY_WORD, vocab.word)
@@ -106,7 +106,7 @@ class DatabaseHelper(val context: Context) : SQLiteOpenHelper(
             }
         }
 
-        val questionList = Functions.loadInitialQuestions(context)
+        val questionList = Functions.loadInitialQuestions(context!!)
         for (question in questionList) {
             val values = ContentValues()
             values.put(KEY_QUESTION, question.question)
@@ -272,6 +272,33 @@ class DatabaseHelper(val context: Context) : SQLiteOpenHelper(
     }
 
     /*
+ * return boolean for specified vocab saved or not
+ */
+    fun isVocabSaved(id: Int): Boolean {
+
+        val vocab_ids: ArrayList<Int> = ArrayList<Int>()
+
+        val db = this.readableDatabase
+
+        val selectQuery =  "SELECT  * FROM " + TABLE_MY_VOCAB_LIST + " WHERE " + KEY_VOCAB_ID + " = " + "\"$id\""
+
+        Log.e(TAG, selectQuery);
+
+        val c: Cursor? = db.rawQuery(selectQuery, null)
+
+        // looping through all rows and adding to list
+
+        // looping through all rows and adding to list
+         val count = c!!.count;
+        c.close();
+        if(count == 0){
+            return false
+        }
+        return true
+    }
+
+
+    /*
    * add a word to my list table
    */
     fun addMyList(id: Int): Long {
@@ -283,6 +310,24 @@ class DatabaseHelper(val context: Context) : SQLiteOpenHelper(
         val id = db.insert(TABLE_MY_VOCAB_LIST, null, values)
 
         return id
+    }
+
+    /*
+    * remove a word to my list table
+    */
+    fun deleteWordFromMyList(id: Int): Boolean {
+
+        val db = this.writableDatabase
+
+        return db.delete(TABLE_MY_VOCAB_LIST, KEY_VOCAB_ID + "=" + id, null) > 0;
+    }
+
+    /*
+  * remove a word to my list table
+  */
+    fun deleteWordFromMyList2(id: Int, databaseHelper: DatabaseHelper): Boolean {
+
+        return databaseHelper.writableDatabase.delete(TABLE_MY_VOCAB_LIST, KEY_VOCAB_ID + "=" + id, null) > 0;
     }
 
 
